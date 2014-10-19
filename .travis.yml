@@ -37,7 +37,8 @@ after_success:
   - git config --global user.email "build.$TRAVIS_BUILD_NUMBER@travis-ci"
   - git config --global user.name "Travis CI"
   - git config --global push.default simple
-  # - git tag -f $GIT_TAG -m "Generated release tag after successful build Travis CI no. $TRAVIS_BUILD_NUMBER"
-  # - echo "https://$GITHUB_TOKEN@github.com/$(git remote show origin | sed -n 's/.*github.com\/\(.*\).git/\1/p')" $GIT_TAG
+  - git tag -f $GIT_TAG -m "Generated release tag after successful build Travis CI no. $TRAVIS_BUILD_NUMBER"
+  - git push git@github.com:cptactionhank/docker-atlassian-stash.git $GIT_TAG
+  # - git push "https://$GITHUB_TOKEN@github.com/$(git remote show origin | sed -n 's/.*github.com\/\(.*\).git/\1/p')" $GIT_TAG
   - git remote show origin
   - cat .git/config
