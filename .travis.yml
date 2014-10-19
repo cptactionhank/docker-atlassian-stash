@@ -33,6 +33,8 @@ script:
   # - bundle exec rspec --format documentation --color --fail-fast
 
 after_success:
+  - echo "Host github.com" >> ~/.ssh/config
+  - echo "  IdentityFile ~/.ssh/github_rsa" >> ~/.ssh/config
   - export GIT_TAG=$(sed -n 's/ENV .*_VERSION \(.*\)$/\1/p' Dockerfile)
   - git config --global user.email "build.$TRAVIS_BUILD_NUMBER@travis-ci"
   - git config --global user.name "Travis CI"
