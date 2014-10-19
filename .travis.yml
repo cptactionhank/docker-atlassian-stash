@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-language: java
-jdk:
-  - oraclejdk8
-script: echo "foo"
-=======
 language: ruby
 
 rvm:
@@ -40,4 +34,3 @@ script:
 after_deploy:
   - git tag -f "release 1" -m 'deployed after successful build by travis-ci'
   - git push origin --tags
->>>>>>> b3de9ab... initial commit
