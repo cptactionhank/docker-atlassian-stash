@@ -31,6 +31,6 @@ script:
   - docker version
   - bundle exec rspec --format documentation --color --fail-fast
 
-after_deploy:
+before_deploy:
   - git tag -f "release 1" -m 'deployed after successful build by travis-ci'
   - git push origin --tags
