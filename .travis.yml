@@ -38,4 +38,4 @@ after_success:
   - git config --global user.name "Travis CI"
   - export GIT_TAG=$(sed -n 's/ENV .*_VERSION \(.*\)$/\1/p' Dockerfile)
   - git tag -f $GIT_TAG -m 'Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER'
-  - git push https://github.com/cptactionhank/docker-atlassian-stash $GIT_TAG
+  - git push git@github.com:cptactionhank/docker-atlassian-stash.git $GIT_TAG
