@@ -38,4 +38,4 @@ after_success:
   - git config --global user.name "Travis CI"
   - git config --global push.default simple
   - git tag -f $GIT_TAG -m "Generated release tag from Travis CI build $TRAVIS_BUILD_NUMBER"
-  - git push "https://$GITHUB_TOKEN@github.com/$(git remote show origin | sed -n 's/.*Push.*URL:.*:\(.*\).git/\1/p')" $GIT_TAG
+  - echo "https://$GITHUB_TOKEN@github.com/$(git remote show origin | sed -n 's/.*Push.*URL:.*:\(.*\).git/\1/p')" $GIT_TAG
