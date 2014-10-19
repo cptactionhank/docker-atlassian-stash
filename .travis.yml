@@ -3,12 +3,13 @@ language: ruby
 # rvm:
 #   - 2.1.3
 
-# env:
-#   global:
-#     - "HOST_IP=$(/sbin/ifconfig venet0:0 | grep 'inet addr' | awk -F: '{print $2}' | awk '{print $1}')"
-#     - DOCKER_HOST=tcp://$HOST_IP:2375
-#     - DOCKER_PORT_RANGE=2400:2500
-#     - SLIRP_PORTS=$(seq 2375 2500)
+env:
+  global:
+    - "HOST_IP=$(/sbin/ifconfig venet0:0 | grep 'inet addr' | awk -F: '{print $2}' | awk '{print $1}')"
+    - DOCKER_HOST=tcp://$HOST_IP:2375
+    - DOCKER_PORT_RANGE=2400:2500
+    - SLIRP_PORTS=$(seq 2375 2500)
+    - secure: "NYHBTesJ4tvH2FFmAYn4YRfsnjSZ5pJn+NpIx1FRjjMApZr435kxAE+4m20gpL2LfHrZ52GAdcHCq9ew9ECa+/T/GT5iUH8GfIf1Sw0jz3DyipsLe4HRq0hQfr03DMYR1ukcbsiYjrVGyiWPugDhcYztxr43rDyJKZrKu+Qrvno="
 
 # before_install:
 #   - sudo sh -c "wget -qO- https://get.docker.io/gpg | apt-key add -"
@@ -37,5 +38,4 @@ after_success:
   - git config --global user.name "Travis CI"
   - export GIT_TAG=build-$TRAVIS_BRANCH-$(date -u "+%Y-%m-%d")-$TRAVIS_BUILD_NUMBER
   - git tag -f $GIT_TAG -m 'Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER'
-  # - git push origin --tags
-  - echo $GITHUBKEY
+  - git push https://$GITHUB_TOKEN@github.com/cptactionhank/docker-atlassian-stash $GIT_TAG
