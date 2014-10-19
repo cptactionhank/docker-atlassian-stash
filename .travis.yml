@@ -9,7 +9,6 @@ env:
     - DOCKER_HOST=tcp://$HOST_IP:2375
     - DOCKER_PORT_RANGE=2400:2500
     - SLIRP_PORTS=$(seq 2375 2500)
-    - secure: "NYHBTesJ4tvH2FFmAYn4YRfsnjSZ5pJn+NpIx1FRjjMApZr435kxAE+4m20gpL2LfHrZ52GAdcHCq9ew9ECa+/T/GT5iUH8GfIf1Sw0jz3DyipsLe4HRq0hQfr03DMYR1ukcbsiYjrVGyiWPugDhcYztxr43rDyJKZrKu+Qrvno="
 
 # before_install:
 #   - sudo sh -c "wget -qO- https://get.docker.io/gpg | apt-key add -"
@@ -34,7 +33,6 @@ script:
   # - bundle exec rspec --format documentation --color --fail-fast
 
 after_success:
-  - env
   - git config --global user.email "build.$TRAVIS_BUILD_NUMBER@travis-ci"
   - git config --global user.name "Travis CI"
   - export GIT_TAG=$(sed -n 's/ENV .*_VERSION \(.*\)$/\1/p' Dockerfile)
