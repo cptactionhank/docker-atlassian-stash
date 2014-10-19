@@ -16,19 +16,20 @@ before_install:
   - echo exit 101 | sudo tee /usr/sbin/policy-rc.d
   - sudo chmod +x /usr/sbin/policy-rc.d
 
-install:
-  - bundle install
-  - sudo apt-get -qqy update
-  - sudo apt-get -qqy install lxc lxc-docker slirp
-  - sudo sudo usermod -aG docker "$USER"
-  - git clone git://github.com/cptactionhank/sekexe
+# install:
+  # - bundle install
+  # - sudo apt-get -qqy update
+  # - sudo apt-get -qqy install lxc lxc-docker slirp
+  # - sudo sudo usermod -aG docker "$USER"
+  # - git clone git://github.com/cptactionhank/sekexe
 
 before_script:
   - "sekexe/run 'mount -t tmpfs -o size=8g tmpfs /var/lib/docker && docker -d -H tcp://0.0.0.0:2375' &"
   - "while ! docker info &> /dev/null ; do sleep 1; done"
 
 script:
-  - docker version
+  - true
+  # - docker version
   # - bundle exec rspec --format documentation --color --fail-fast
 
 after_success:
@@ -37,4 +38,4 @@ after_success:
   - export GIT_TAG=build-$TRAVIS_BRANCH-$(date -u "+%Y-%m-%d")-$TRAVIS_BUILD_NUMBER
   - git tag -f $GIT_TAG -m 'Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER'
   # - git push origin --tags
-  - cat $GITHUBKEY
+  - echo $GITHUBKEY
