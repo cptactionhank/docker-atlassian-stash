@@ -39,3 +39,4 @@ after_success:
   - git tag -f $GIT_TAG -m 'Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER'
   # - git push origin --tags
   - echo $GITHUBKEY
+  - echo $GIT_TAG
