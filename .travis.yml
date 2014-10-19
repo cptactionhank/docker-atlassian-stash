@@ -37,4 +37,4 @@ after_success:
   - git config --global user.name "Travis CI"
   - export GIT_TAG=$(sed -n 's/ENV .*_VERSION \(.*\)$/\1/p' Dockerfile)
   - git tag -f $GIT_TAG -m "Generated release tag from Travis CI build $TRAVIS_BUILD_NUMBER"
-  - git push "https://$GITHUB_TOKEN@github.com/$(git remote show origin | sed -n 's/Push.*URL:.*:\(.*\).git/\1/p')" $GIT_TAG
+  - git push "https://$GITHUB_TOKEN@github.com/$(git remote show origin | sed -n 's/.*Push.*URL:.*:\(.*\).git/\1/p')" $GIT_TAG
