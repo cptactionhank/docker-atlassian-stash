@@ -41,4 +41,4 @@ after_success:
   - git fetch origin --tags
   - git tag $GIT_TAG --force --annotate --message "Generated release tag after successful build Travis CI no. $TRAVIS_BUILD_NUMBER"
   # - git push git@github.com:cptactionhank/docker-atlassian-stash.git $GIT_TAG
-  - git push origin --tags --force
+  - git push origin $GIT_TAG --force
