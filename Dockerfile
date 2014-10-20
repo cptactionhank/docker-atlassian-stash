@@ -3,7 +3,7 @@ FROM java:8
 # setup useful environment variables
 ENV STASH_HOME     /var/local/atlassian/stash
 ENV STASH_INSTALL  /usr/local/atlassian/stash
-ENV STASH_VERSION  3.3.2
+ENV STASH_VERSION  3.3.1
 
 # install ``Atlassian Stash`` and dependencies
 RUN set -x \
