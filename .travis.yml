@@ -40,6 +40,6 @@ after_success:
   - git tag -f $GIT_TAG -m "Generated release tag after successful build Travis CI no. $TRAVIS_BUILD_NUMBER"
   # - git push git@github.com:cptactionhank/docker-atlassian-stash.git $GIT_TAG
   # - ls -lha ~/.ssh/
-  - git push --quiet "https://github.com/cptactionhank/docker-atlassian-stash.git" $GIT_TAG
+  - git push --quiet "https://$GITHUB_TOKEN@github.com/cptactionhank/docker-atlassian-stash.git" $GIT_TAG
   # - git remote show origin
   # - cat .git/config
