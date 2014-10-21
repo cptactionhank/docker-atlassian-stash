@@ -32,7 +32,6 @@ before_script:
   - "while ! docker info &> /dev/null ; do sleep 1; done"
 
 script:
-  - true
   - docker version
   - bundle exec rspec --format documentation --color --fail-fast
 
