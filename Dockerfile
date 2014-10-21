@@ -8,15 +8,16 @@ ENV STASH_VERSION  3.3.1
 # install ``Atlassian Stash`` and dependencies
 RUN set -x \
     && apt-get install -qqy libtcnative-1 git-core \
-    && mkdir -p             "${STASH_HOME}" \
+    && mkdir --parents      "${STASH_HOME}" \
     && chown nobody:nogroup "${STASH_HOME}" \
-    && mkdir -p             "${STASH_INSTALL}" \
+    && mkdir --parents      "${STASH_INSTALL}" \
     && curl -Ls             "http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${STASH_VERSION}.tar.gz" | tar -zx --directory  "${STASH_INSTALL}" --strip-components=1 \
     && chmod -R 777         "${STASH_INSTALL}/temp" \
     && chmod -R 777         "${STASH_INSTALL}/logs" \
     && chmod -R 777         "${STASH_INSTALL}/work" \
     && mkdir                "${STASH_INSTALL}/conf/Catalina" \
-    && chmod -R 777         "${STASH_INSTALL}/conf/Catalina"
+    && chmod -R 777         "${STASH_INSTALL}/conf/Catalina" \
+    && ln --symbolic        "/usr/lib/x86_64-linux-gnu/libtcnative-1.so" "${STASH_INSTALL}/lib/native/libtcnative-1.so"
 
 # run ``Atlassian Stash`` as unprivileged user by default
 USER nobody:nogroup
