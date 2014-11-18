@@ -3,11 +3,13 @@ FROM java:8
 # setup useful environment variables
 ENV STASH_HOME     /var/local/atlassian/stash
 ENV STASH_INSTALL  /usr/local/atlassian/stash
-ENV STASH_VERSION  3.4.0
+ENV STASH_VERSION  3.3.1
 
 # install ``Atlassian Stash`` and dependencies
 RUN set -x \
-    && apt-get install -qqy libtcnative-1 git-core \
+    && apt-get update --quiet \
+    && apt-get install --quiet --yes --no-install-recommends libtcnative-1 git-core xmlstarlet \
+    && apt-get clean \
     && mkdir --parents      "${STASH_HOME}" \
     && chown nobody:nogroup "${STASH_HOME}" \
     && mkdir --parents      "${STASH_INSTALL}" \
@@ -17,7 +19,12 @@ RUN set -x \
     && chmod -R 777         "${STASH_INSTALL}/work" \
     && mkdir                "${STASH_INSTALL}/conf/Catalina" \
     && chmod -R 777         "${STASH_INSTALL}/conf/Catalina" \
-    && ln --symbolic        "/usr/lib/x86_64-linux-gnu/libtcnative-1.so" "${STASH_INSTALL}/lib/native/libtcnative-1.so"
+    && mkdir                "${STASH_HOME}/lib" \
+    && ln --symbolic        "/usr/lib/x86_64-linux-gnu/libtcnative-1.so" "${STASH_INSTALL}/lib/native/libtcnative-1.so" \
+    && xmlstarlet           ed --inplace \
+        --delete            "Server/Service/Engine/Host/@xmlValidation" \
+        --delete            "Server/Service/Engine/Host/@xmlNamespaceAware" \
+                            "${STASH_INSTALL}/conf/server.xml"
 
 # run ``Atlassian Stash`` as unprivileged user by default
 USER nobody:nogroup
