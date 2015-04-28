@@ -1,39 +1,53 @@
-FROM java:8
+FROM java:7
 
-# setup useful environment variables
+# Configuration variables.
 ENV STASH_HOME     /var/local/atlassian/stash
 ENV STASH_INSTALL  /usr/local/atlassian/stash
 ENV STASH_VERSION  3.4.0
 
-# install ``Atlassian Stash`` and dependencies
+# Install Atlassian Stash and helper tools and setup initial home
+# directory structure.
 RUN set -x \
     && apt-get update --quiet \
     && apt-get install --quiet --yes --no-install-recommends libtcnative-1 git-core xmlstarlet \
     && apt-get clean \
-    && mkdir --parents      "${STASH_HOME}" \
-    && chown nobody:nogroup "${STASH_HOME}" \
-    && mkdir --parents      "${STASH_INSTALL}" \
-    && curl -Ls             "http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${STASH_VERSION}.tar.gz" | tar -zx --directory  "${STASH_INSTALL}" --strip-components=1 \
-    && chmod -R 777         "${STASH_INSTALL}/temp" \
-    && chmod -R 777         "${STASH_INSTALL}/logs" \
-    && chmod -R 777         "${STASH_INSTALL}/work" \
-    && mkdir                "${STASH_INSTALL}/conf/Catalina" \
-    && chmod -R 777         "${STASH_INSTALL}/conf/Catalina" \
-    && mkdir                "${STASH_HOME}/lib" \
-    && ln --symbolic        "/usr/lib/x86_64-linux-gnu/libtcnative-1.so" "${STASH_INSTALL}/lib/native/libtcnative-1.so" \
-    && xmlstarlet           ed --inplace \
-        --delete            "Server/Service/Engine/Host/@xmlValidation" \
-        --delete            "Server/Service/Engine/Host/@xmlNamespaceAware" \
-                            "${STASH_INSTALL}/conf/server.xml"
+    && curl -o /usr/local/bin/gosu -sL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" \
+    && chmod +x /usr/local/bin/gosu \
+    && mkdir -p               "${STASH_HOME}/lib" \
+    && chmod -R 700           "${STASH_HOME}" \
+    && chown -R daemon:daemon "${STASH_HOME}" \
+    && mkdir -p               "${STASH_INSTALL}" \
+    && curl -Ls               "http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${STASH_VERSION}.tar.gz" | tar -zx --directory  "${STASH_INSTALL}" --strip-components=1 --no-same-owner \
+    && chmod -R 700           "${STASH_INSTALL}/conf" \
+    && chmod -R 700           "${STASH_INSTALL}/logs" \
+    && chmod -R 700           "${STASH_INSTALL}/temp" \
+    && chmod -R 700           "${STASH_INSTALL}/work" \
+    && chown -R daemon:daemon "${STASH_INSTALL}/conf" \
+    && chown -R daemon:daemon "${STASH_INSTALL}/logs" \
+    && chown -R daemon:daemon "${STASH_INSTALL}/temp" \
+    && chown -R daemon:daemon "${STASH_INSTALL}/work" \
+    && ln --symbolic          "/usr/lib/x86_64-linux-gnu/libtcnative-1.so" "${STASH_INSTALL}/lib/native/libtcnative-1.so" \
+    && sed --in-place         's/^# umask 0027$/umask 0027/g' "${STASH_INSTALL}/bin/setenv.sh" \
+    && xmlstarlet             ed --inplace \
+        --delete              "Server/Service/Engine/Host/@xmlValidation" \
+        --delete              "Server/Service/Engine/Host/@xmlNamespaceAware" \
+                              "${STASH_INSTALL}/conf/server.xml"
 
-# run ``Atlassian Stash`` as unprivileged user by default
-USER nobody:nogroup
+# Use the default unprivileged account. This could be considered bad practice
+# on systems where multiple processes end up being executed by 'daemon' but
+# here we only ever run one process anyway.
+# USER daemon:daemon
 
-# expose default ``Atlassian Stash`` HTTP and SSH port
+# Expose default HTTP connector port.
 EXPOSE 7990 7999
 
-# set volume mount points for installation and home directory
-VOLUME ["/usr/local/atlassian/stash", "/var/local/atlassian/stash"]
+# Set volume mount points for installation and home directory. Changes to the
+# home directory needs to be persisted as well as parts of the installation
+# directory due to eg. logs.
+VOLUME ["/var/local/atlassian/stash"]
 
-# run ``Atlassian Stash`` as a foreground process by default
-ENTRYPOINT ["/usr/local/atlassian/stash/bin/start-stash.sh", "-fg"]
+# Set the default working directory as the installation directory.
+WORKDIR ${STASH_HOME}
+
+# Run Atlassian Stash as a foreground process by default.
+CMD ["/usr/local/atlassian/stash/bin/start-stash.sh", "-fg"]
