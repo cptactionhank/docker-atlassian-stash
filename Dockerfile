@@ -11,8 +11,6 @@ RUN set -x \
     && apt-get update --quiet \
     && apt-get install --quiet --yes --no-install-recommends libtcnative-1 git-core xmlstarlet \
     && apt-get clean \
-    && curl -o /usr/local/bin/gosu -sL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" \
-    && chmod +x /usr/local/bin/gosu \
     && mkdir -p               "${STASH_HOME}/lib" \
     && chmod -R 700           "${STASH_HOME}" \
     && chown -R daemon:daemon "${STASH_HOME}" \
@@ -36,7 +34,7 @@ RUN set -x \
 # Use the default unprivileged account. This could be considered bad practice
 # on systems where multiple processes end up being executed by 'daemon' but
 # here we only ever run one process anyway.
-# USER daemon:daemon
+USER daemon:daemon
 
 # Expose default HTTP connector port.
 EXPOSE 7990 7999
