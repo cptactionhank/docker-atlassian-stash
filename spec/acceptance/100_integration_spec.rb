@@ -30,7 +30,7 @@ describe 'Atlassian JIRA instance' do
       it { is_expected.to wait_until_matches('path to change') { current_path == '/setup' } }
       it { expect(current_path).to match '/setup' }
       it { is_expected.to have_title 'Setup - Stash' }
-      it { is_expected.to have_content 'Stash Setup' }
+      it { is_expected.to have_content 'Stash setup' }
       it { is_expected.to have_button 'Next' }
     end
 
