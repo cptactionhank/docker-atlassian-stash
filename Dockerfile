@@ -3,7 +3,7 @@ FROM java:7
 # Configuration variables.
 ENV STASH_HOME     /var/atlassian/stash
 ENV STASH_INSTALL  /opt/atlassian/stash
-ENV STASH_VERSION  3.10.3
+ENV STASH_VERSION  3.10.4
 
 # Install Atlassian Stash and helper tools and setup initial home
 # directory structure.
