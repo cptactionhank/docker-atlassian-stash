@@ -1,9 +1,9 @@
 FROM java:7
 
 # Configuration variables.
-ENV STASH_HOME     /var/local/atlassian/stash
-ENV STASH_INSTALL  /usr/local/atlassian/stash
-ENV STASH_VERSION  3.8.0
+ENV STASH_HOME     /var/atlassian/stash
+ENV STASH_INSTALL  /opt/atlassian/stash
+ENV STASH_VERSION  3.11.1
 
 # Install Atlassian Stash and helper tools and setup initial home
 # directory structure.
@@ -11,8 +11,6 @@ RUN set -x \
     && apt-get update --quiet \
     && apt-get install --quiet --yes --no-install-recommends libtcnative-1 git-core xmlstarlet \
     && apt-get clean \
-    && curl -o /usr/local/bin/gosu -sL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" \
-    && chmod +x /usr/local/bin/gosu \
     && mkdir -p               "${STASH_HOME}/lib" \
     && chmod -R 700           "${STASH_HOME}" \
     && chown -R daemon:daemon "${STASH_HOME}" \
@@ -36,7 +34,7 @@ RUN set -x \
 # Use the default unprivileged account. This could be considered bad practice
 # on systems where multiple processes end up being executed by 'daemon' but
 # here we only ever run one process anyway.
-# USER daemon:daemon
+USER daemon:daemon
 
 # Expose default HTTP connector port.
 EXPOSE 7990 7999
@@ -44,10 +42,10 @@ EXPOSE 7990 7999
 # Set volume mount points for installation and home directory. Changes to the
 # home directory needs to be persisted as well as parts of the installation
 # directory due to eg. logs.
-VOLUME ["/var/local/atlassian/stash"]
+VOLUME ["/var/atlassian/stash"]
 
 # Set the default working directory as the installation directory.
 WORKDIR ${STASH_HOME}
 
 # Run Atlassian Stash as a foreground process by default.
-CMD ["/usr/local/atlassian/stash/bin/start-stash.sh", "-fg"]
+CMD ["/opt/atlassian/stash/bin/start-stash.sh", "-fg"]

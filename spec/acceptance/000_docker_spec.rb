@@ -16,8 +16,8 @@ describe 'Docker image building' do
     it { is_expected.to_not have_exposed_port udp: 7990 }
     it { is_expected.to have_exposed_port tcp: 7999 }
     it { is_expected.to_not have_exposed_port udp: 7999 }
-    it { is_expected.to have_volume '/var/local/atlassian/stash' }
-    it { is_expected.not_to have_volume '/usr/local/atlassian/stash' }
-    it { is_expected.to have_working_directory '/var/local/atlassian/stash' }
+    it { is_expected.to have_volume '/var/atlassian/stash' }
+    it { is_expected.not_to have_volume '/opt/atlassian/stash' }
+    it { is_expected.to have_working_directory '/var/atlassian/stash' }
   end
 end
