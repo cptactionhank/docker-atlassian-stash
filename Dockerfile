@@ -1,9 +1,9 @@
 FROM java:7
 
 # Configuration variables.
-ENV STASH_HOME     /var/local/atlassian/stash
-ENV STASH_INSTALL  /usr/local/atlassian/stash
-ENV STASH_VERSION  3.10.0
+ENV STASH_HOME     /var/atlassian/stash
+ENV STASH_INSTALL  /opt/atlassian/stash
+ENV STASH_VERSION  3.10.2
 
 # Install Atlassian Stash and helper tools and setup initial home
 # directory structure.
@@ -42,10 +42,10 @@ EXPOSE 7990 7999
 # Set volume mount points for installation and home directory. Changes to the
 # home directory needs to be persisted as well as parts of the installation
 # directory due to eg. logs.
-VOLUME ["/var/local/atlassian/stash"]
+VOLUME ["/var/atlassian/stash"]
 
 # Set the default working directory as the installation directory.
 WORKDIR ${STASH_HOME}
 
 # Run Atlassian Stash as a foreground process by default.
-CMD ["/usr/local/atlassian/stash/bin/start-stash.sh", "-fg"]
+CMD ["/opt/atlassian/stash/bin/start-stash.sh", "-fg"]

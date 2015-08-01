@@ -1,10 +1,10 @@
 require 'timeout'
 require 'spec_helper'
 
-describe 'Atlassian JIRA instance' do
+describe 'Atlassian Stash instance' do
   include_context 'a buildable docker image', '.'
 
-  describe 'when starting a JIRA instance' do
+  describe 'when starting a Stash instance' do
     before(:all) { @container.start! PublishAllPorts: true }
 
     it { is_expected.to_not be_nil }
@@ -43,21 +43,21 @@ describe 'Atlassian JIRA instance' do
       # end
 
       # it { expect(current_path).to match '/secure/SetupApplicationProperties!default.jspa' }
-      # it { is_expected.to have_title 'Your Company JIRA - JIRA Setup' }
+      # it { is_expected.to have_title 'Your Company Stash - Stash Setup' }
       # it { is_expected.to have_content 'Set Up Application Properties' }
     end
 
     context 'when processing application properties setup' do
       # before :all do
       #   within '#jira-setupwizard' do
-      #     fill_in 'title', with: 'JIRA Test instance'
+      #     fill_in 'title', with: 'Stash Test instance'
       #     choose 'jira-setupwizard-mode-public'
       #     click_button 'Next'
       #   end
       # end
 
       # it { expect(current_path).to match '/secure/SetupProductBundle!default.jspa' }
-      # it { is_expected.to have_title 'JIRA Test instance - JIRA Setup' }
+      # it { is_expected.to have_title 'Stash Test instance - Stash Setup' }
       # it { is_expected.to have_content 'Customize Your Installation' }
       # it { is_expected.to have_content 'Project tracking' }
     end
@@ -71,9 +71,9 @@ describe 'Atlassian JIRA instance' do
       # end
 
       # it { expect(current_path).to match '/secure/SetupLicense!default.jspa' }
-      # it { is_expected.to have_title 'JIRA Test instance - JIRA Setup' }
+      # it { is_expected.to have_title 'Stash Test instance - Stash Setup' }
       # it { is_expected.to have_content 'Adding Your License Key' }
-      # it { is_expected.to have_content 'You need a license key to set up JIRA' }
+      # it { is_expected.to have_content 'You need a license key to set up Stash' }
     end
 
     context 'when processing license setup' do
@@ -83,14 +83,19 @@ describe 'Atlassian JIRA instance' do
     end
   end
 
-  describe 'Stopping the JIRA instance' do
+  describe 'Stopping the Stash instance' do
     before(:all) { @container.kill_and_wait signal: 'SIGKILL' }
 
     it 'should shut down successful' do
       # give the container up to 5 minutes to successfully shutdown
       # exit code: 128+n Fatal error signal "n", ie. 130 = fatal error signal
       # SIGINT
-      is_expected.to include_state 'ExitCode' => 137, 'Running' => false
+      #
+      # The following state check has been left out 'ExitCode' => 143 to
+      # suppor CircleCI as CI builder. For some reason whether you send SIGTERM
+      # or SIGKILL, the exit code is always 0, perhaps it's the container
+      # driver
+      is_expected.to include_state 'Running' => false
     end
 
     include_examples 'a clean console'
