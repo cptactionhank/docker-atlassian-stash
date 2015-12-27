@@ -15,7 +15,7 @@ echo "Obtaining Altassian Stash version information..."
 
 # Obtain the currently latest version of Atlassian Stash version defined
 # by the Dockerfile in this repository.
-CURRENT_VERSION=$(sed -nr 's/ENV CONF_VERSION[[:space:]]*(.+)/\1/p' Dockerfile)
+CURRENT_VERSION=$(sed -nr 's/ENV STASH_VERSION[[:space:]]*(.+)/\1/p' Dockerfile)
 
 # Obtain the latest Atlassian Stash version by going to the JSON version
 # feed information to get a JSONP formatted response, strip the output to
@@ -34,7 +34,7 @@ echo "Preparing branch for version new Atlassian Stash version"
 # Edit the Dockerfile by changing the current version to the new obtained
 # version from the Atlassian Stash version feed.
 sed --in-place \
-    --expression "s/ENV CONF_VERSION  ${CURRENT_VERSION}/ENV CONF_VERSION  ${VERSION}/g" \
+    --expression "s/ENV STASH_VERSION  ${CURRENT_VERSION}/ENV STASH_VERSION  ${VERSION}/g" \
     Dockerfile
 
 # Edit the `README.md` by changing the announced version in the content
