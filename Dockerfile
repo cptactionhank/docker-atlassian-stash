@@ -1,9 +1,9 @@
-FROM java:7
+FROM java:8
 
-# Configuration variables.
+# Setup useful environment variables
 ENV STASH_HOME     /var/atlassian/stash
 ENV STASH_INSTALL  /opt/atlassian/stash
-ENV STASH_VERSION  3.11.1
+ENV STASH_VERSION  3.11.6
 
 # Install Atlassian Stash and helper tools and setup initial home
 # directory structure.
@@ -16,6 +16,7 @@ RUN set -x \
     && chown -R daemon:daemon "${STASH_HOME}" \
     && mkdir -p               "${STASH_INSTALL}" \
     && curl -Ls               "http://www.atlassian.com/software/stash/downloads/binary/atlassian-stash-${STASH_VERSION}.tar.gz" | tar -zx --directory  "${STASH_INSTALL}" --strip-components=1 --no-same-owner \
+    && curl -Ls                "https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.36.tar.gz" | tar -xz --directory "${STASH_INSTALL}/lib" --strip-components=1 --no-same-owner "mysql-connector-java-5.1.36/mysql-connector-java-5.1.36-bin.jar" \
     && chmod -R 700           "${STASH_INSTALL}/conf" \
     && chmod -R 700           "${STASH_INSTALL}/logs" \
     && chmod -R 700           "${STASH_INSTALL}/temp" \
@@ -36,7 +37,7 @@ RUN set -x \
 # here we only ever run one process anyway.
 USER daemon:daemon
 
-# Expose default HTTP connector port.
+# Expose default HTTP and SSH ports.
 EXPOSE 7990 7999
 
 # Set volume mount points for installation and home directory. Changes to the
@@ -44,8 +45,8 @@ EXPOSE 7990 7999
 # directory due to eg. logs.
 VOLUME ["/var/atlassian/stash"]
 
-# Set the default working directory as the installation directory.
+# Set the default working directory as the Stash home directory.
 WORKDIR ${STASH_HOME}
 
 # Run Atlassian Stash as a foreground process by default.
-CMD ["/opt/atlassian/stash/bin/start-stash.sh", "-fg"]
+CMD ["/opt/atlassian/stash/bin/catalina.sh", "run"]
