@@ -1,8 +1,8 @@
 # Atlassian Stash in a Docker container
 
-> Version 3.11.1
+> Version 3.11.6
 
-[![Build Status](https://img.shields.io/circleci/project/cptactionhank/docker-atlassian-stash/3.11.1.svg)](https://circleci.com/gh/cptactionhank/docker-atlassian-stash) [![Open Issues](https://img.shields.io/github/issues/cptactionhank/docker-atlassian-stash.svg)](https://github.com/cptactionhank/docker-atlassian-stash/issues) [![Stars on GitHub](https://img.shields.io/github/stars/cptactionhank/docker-atlassian-stash.svg)](https://github.com/cptactionhank/docker-atlassian-stash/stargazers) [![Forks on GitHub](https://img.shields.io/github/forks/cptactionhank/docker-atlassian-stash.svg)](https://github.com/cptactionhank/docker-atlassian-stash/network) [![Stars on Docker Hub](https://img.shields.io/docker/stars/cptactionhank/atlassian-stash.svg)](https://hub.docker.com/r/cptactionhank/atlassian-stash/) [![Pulls on Docker Hub](https://img.shields.io/docker/pulls/cptactionhank/atlassian-stash.svg)](https://hub.docker.com/r/cptactionhank/atlassian-stash/)
+[![Build Status](https://img.shields.io/circleci/project/cptactionhank/docker-atlassian-stash/3.11.6.svg)](https://circleci.com/gh/cptactionhank/docker-atlassian-stash) [![Open Issues](https://img.shields.io/github/issues/cptactionhank/docker-atlassian-stash.svg)](https://github.com/cptactionhank/docker-atlassian-stash/issues) [![Stars on GitHub](https://img.shields.io/github/stars/cptactionhank/docker-atlassian-stash.svg)](https://github.com/cptactionhank/docker-atlassian-stash/stargazers) [![Forks on GitHub](https://img.shields.io/github/forks/cptactionhank/docker-atlassian-stash.svg)](https://github.com/cptactionhank/docker-atlassian-stash/network) [![Stars on Docker Hub](https://img.shields.io/docker/stars/cptactionhank/atlassian-stash.svg)](https://hub.docker.com/r/cptactionhank/atlassian-stash/) [![Pulls on Docker Hub](https://img.shields.io/docker/pulls/cptactionhank/atlassian-stash.svg)](https://hub.docker.com/r/cptactionhank/atlassian-stash/)
 
 A containerized installation of Atlassian Stash setup with a goal of keeping the installation as default as possible, but with a few Docker related twists.
 
@@ -12,7 +12,7 @@ Want to help out, check out the contribution section.
 
 To quickly get started with running a Stash instance, first run the following command:
 ```bash
-docker run --detach --publish 7990:7990 cptactionhank/atlassian-stash:3.11.1
+docker run --detach --publish 7990:7990 cptactionhank/atlassian-stash:3.11.6
 ```
 
 Then use your browser to navigate to `http://[dockerhost]:7990` and finish the configuration.
