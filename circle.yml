@@ -27,12 +27,3 @@ database:
   override:
     - bin/setup_databases
 
-test:
-  pre:
-    - bin/prepare
-
-deployment:
-  newest-version:
-    branch: master
-    commands:
-      - bin/deploy
